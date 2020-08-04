@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "parcel start src/index.html --open -p 10345",
-    "build": "parcel build src/index.html",
+    "build": "parcel build --no-minify src/index.html",
     "generate-dto": "typescript-ref http://localhost:5000 ./src/services/api"
   },
   "dependencies": {

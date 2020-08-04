@@ -1,12 +1,574 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>TestApp</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="description" content="Comparison between setInterval and requestAnimationFrame" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>Frame Rate Distribution: setInterval vs requestAnimationFrame</title>
+    <link href='reset.css' rel='stylesheet' type='text/css' />
+    <link href='toggle-switch.css' rel='stylesheet' type='text/css' />
+    <link href='https://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css' />
+    <style>
+        body {
+            font-family: 'Fjalla One', sans-serif;
+            font-size: 10px;
+            color: #EEE;
+            background-color: #41464f;
+            min-height: 100%;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        #nav-fancy {
+            height: 40px;
+            width: 100%;
+            position: fixed;
+            background: #5d6466;
+            -moz-box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.5);
+            -webkit-box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.5);
+            box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.5);
+            overflow: hidden;
+        }
+
+        #nav-content {
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        #logo {
+            font-size: 20px;
+            line-height: 40px;
+            color: #DDD;
+            text-shadow: 0 -1px 0 #000000;
+            text-transform: uppercase;
+            padding-left: 10px;
+            padding-right: 10px;
+            float: left;
+        }
+
+        #nav-fancy .tab {
+            font-size: 16px;
+            line-height: 40px;
+            color: rgba(255,255,255,0.6);
+            text-shadow: 0 -1px 0 #000000;
+            padding-left: 10px;
+            padding-right: 10px;
+            float: left;
+            cursor: pointer;
+        }
+
+            #nav-fancy .tab:not(.selected-tab):hover {
+                color: rgba(255,255,255,0.8);
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+
+        #nav-fancy .selected-tab {
+            color: rgba(220,240,255,1);
+            background-color: rgba(0, 150, 255, 0.5);
+        }
+
+        #nav-fancy #actions {
+            float: left;
+            height: 40px;
+        }
+
+        #nav-fancy #pause-tab, #nav-fancy #restart-tab {
+            float: left;
+            font-size: 16px;
+            color: #FFF;
+            text-shadow: 0 -1px 0 #000000;
+            height: 20px;
+            width: 50px;
+            line-height: 20px;
+            text-align: center;
+            padding-top: 2px;
+            padding-bottom: 2px;
+            padding-left: 10px;
+            padding-right: 10px;
+            margin-top: 8px;
+            margin-left: 10px;
+            margin-right: 10px;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+            -moz-box-shadow: inset 0 1px 1px rgba(255,255,255,0.3), 0 0 3px 1px rgba(0,0,0,0.3);
+            -webkit-box-shadow: inset 0 1px 1px rgba(255,255,255,0.3), 0 0 3px 1px rgba(0,0,0,0.3);
+            box-shadow: inset 0 1px 1px rgba(255,255,255,0.3), 0 0 3px 1px rgba(0,0,0,0.3);
+            background: #a90329;
+            background: -moz-linear-gradient(top, #a90329 0%, #8f0222 44%, #6d0019 100%);
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#a90329), color-stop(44%,#8f0222), color-stop(100%,#6d0019));
+            background: -webkit-linear-gradient(top, #a90329 0%,#8f0222 44%,#6d0019 100%);
+            background: -o-linear-gradient(top, #a90329 0%,#8f0222 44%,#6d0019 100%);
+            background: -ms-linear-gradient(top, #a90329 0%,#8f0222 44%,#6d0019 100%);
+            background: linear-gradient(to bottom, #a90329 0%,#8f0222 44%,#6d0019 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a90329', endColorstr='#6d0019',GradientType=0 );
+            cursor: pointer;
+        }
+
+            #nav-fancy #pause-tab:hover, #nav-fancy #restart-tab:hover {
+                background: #cc2314;
+                background: -moz-linear-gradient(top, #cc2314 0%, #990303 100%);
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#cc2314), color-stop(100%,#990303));
+                background: -webkit-linear-gradient(top, #cc2314 0%,#990303 100%);
+                background: -o-linear-gradient(top, #cc2314 0%,#990303 100%);
+                background: -ms-linear-gradient(top, #cc2314 0%,#990303 100%);
+                background: linear-gradient(to bottom, #cc2314 0%,#990303 100%);
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cc2314', endColorstr='#990303',GradientType=0 );
+            }
+
+        #nav-fancy #social {
+            float: left;
+            margin-top: 10px;
+        }
+
+        #nav-fancy #cfg {
+            float: right;
+            height: 30px;
+            margin-top: 3px;
+        }
+
+        #nav-fancy #format-tab, #nav-fancy #count-tab, #nav-fancy #cpu-eater-tab {
+            float: right;
+            margin-right: 10px;
+        }
+
+        #nav-padding {
+            height: 50px;
+        }
+
+        div.datatable {
+            display: table;
+            width: 100%;
+        }
+
+            div.datatable div.datarow {
+                display: table-row;
+            }
+
+        .unit-label {
+            display: table-cell;
+            width: 50px;
+            font-size: 10px;
+            line-height: 12px;
+            text-align: right;
+        }
+
+            .unit-label span.unit {
+                font-size: 8px;
+                color: #bbb;
+            }
+
+        .bar-container {
+            display: table-cell;
+        }
+
+        .bar {
+            display: inline-block;
+            margin-bottom: 1px;
+            font-size: 10px;
+            line-height: 12px;
+        }
+
+        .bar-label {
+            font-size: 10px;
+            line-height: 12px;
+        }
+
+        #footer-padding {
+            height: 20px;
+        }
+
+        @media (max-width: 990px) {
+
+            #nav-fancy {
+                height: 80px;
+            }
+
+            #nav-padding {
+                height: 90px;
+            }
+        }
+    </style>
 </head>
+
 <body>
-    <div id="root"></div>
-    <script src="./index.tsx"></script>
+    <script type="text/javascript">
+    </script>
+
+        <div id="nav-fancy">
+            <div id="nav-content">
+                <div id="logo">
+                    Frame rate Distribution
+                </div>
+                <div id="setInterval-tab" class="tab selected-tab">setInterval <input id="setInterval-delay" type="tel" value="10" style="position: relative; width:32px; height: 20px; outline:none; border:none; background-color:#41464f; -moz-box-shadow: inset 0 0 3px rgba(0,0,0,0.8); -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,0.8); box-shadow: inset 0 0 3px rgba(0,0,0,0.8); font-family: 'Fjalla One', sans-serif; font-size: 16px; line-height:12px; color:#fff; text-shadow: 0 -1px 0 #000000; text-align:center;" /></div>
+                <div id="requestAnimationFrame-tab" class="tab">requestAnimationFrame</div>
+                <div id="actions">
+                    <div id="pause-tab">PAUSE</div>
+                    <div id="restart-tab">RESTART</div>
+                </div>
+                <div id="cfg">
+                    <div id="cpu-eater-tab">
+                        <label style="color:#fff;">CPU eater (1.1s task)</label>
+                        <div class="switch candy blue" style="width:80px;height: 20px; font-family: sans-serif;">
+                            <input id="eater-off" name="eater" type="radio" checked="checked" />
+                            <label for="eater-off" onclick="chooseEater(this)" style="line-height:20px; cursor:pointer; outline: none;">off</label>
+
+                            <input id="eater-on" name="eater" type="radio" />
+                            <label for="eater-on" onclick="chooseEater(this)" style="line-height:20px; cursor:pointer; outline: none;" title="Turn this one ON to observe the effect of a 1100 millisecond CPU task running in the same JavaScript thread: both the slowing UI reponsiveness and its effect on the running interval and animation frame events">on</label>
+
+                            <span class="slide-button"></span>
+                        </div>
+                    </div>
+                    <div id="count-tab">
+                        <label style="color:#fff;">Count</label>
+                        <div class="switch candy blue" style="width:150px;height: 20px; font-family: sans-serif;">
+                            <input id="count-percentage" name="count" type="radio" />
+                            <label for="count-percentage" onclick="chooseCount(this)" style="line-height:20px; cursor:pointer; outline: none;">percentage</label>
+
+                            <input id="count-occurrence" name="count" type="radio" checked="checked" />
+                            <label for="count-occurrence" onclick="chooseCount(this)" style="line-height:20px; cursor:pointer; outline: none;">occurrence</label>
+
+                            <span class="slide-button"></span>
+                        </div>
+                    </div>
+                    <div id="format-tab">
+                        <label style="color:#fff;">Format</label>
+                        <div class="switch candy blue" style="width:100px;height: 20px; font-family: sans-serif;">
+                            <input id="format-duration" name="format" type="radio" checked="checked" />
+                            <label for="format-duration" onclick="chooseFormat(this)" style="line-height:20px; cursor:pointer; outline: none;">duration</label>
+
+                            <input id="format-fps" name="format" type="radio" />
+                            <label for="format-fps" onclick="chooseFormat(this)" style="line-height:20px; cursor:pointer; outline: none;">fps</label>
+
+                            <span class="slide-button"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <div id="nav-padding"></div>
+            <div id="setInterval-container">
+                <div id="setInterval-fps"></div>
+                <div id="setInterval-report"></div>
+            </div>
+            <div id="requestAnimationFrame-container">
+                <div id="requestAnimationFrame-fps"></div>
+                <div id="requestAnimationFrame-report"></div>
+            </div>
+            <div id="footer-padding"></div>
+            <script type="text/javascript">
+            //<![CDATA[
+            /* Function preparations */
+            // object size
+            Object.size = function (obj) {
+                var size = 0, key;
+                for (key in obj) {
+                    if (obj.hasOwnProperty(key)) size++;
+                }
+                return size;
+            };
+            // requestAnimationFrame
+            (function () {
+                var requestAnimationFrame = window.requestAnimationFrame
+                    || window.mozRequestAnimationFrame
+                    || window.webkitRequestAnimationFrame
+                    || window.msRequestAnimationFrame;
+                window.requestAnimationFrame = requestAnimationFrame;
+                var cancelAnimationFrame = window.CancelAnimationFrame
+                    || window.CancelRequestAnimationFrame
+                    || window.mozCancelAnimationFrame
+                    || window.mozCancelRequestAnimationFrame
+                    || window.msCancelAnimationFrame
+                    || window.msCancelRequestAnimationFrame
+                    || window.webkitCancelAnimationFrame
+                    || window.webkitCancelRequestAnimationFrame;
+                window.cancelAnimationFrame = cancelAnimationFrame;
+            })();
+            // input is number
+            function isNumberKey(evt) {
+                var charCode = (evt.which) ? evt.which : event.keyCode;
+                if (charCode > 31 && (charCode < 48 || charCode > 57)) return false;
+                return true;
+            }
+
+            /* Define variables */
+            // collection for setInterval
+            var setIntervalCollection = {
+                tab: document.getElementById("setInterval-tab"),
+                container: document.getElementById("setInterval-container"),
+                fpsReport: document.getElementById("setInterval-fps"),
+                report: document.getElementById("setInterval-report"),
+                // as per https://2ality.com/2013/10/dict-pattern.html
+                timelog: Object.create(null),
+                fpslog: Object.create(null),
+                prevTime: NaN,
+                profiler: null,
+                process: null
+            };
+            // collection for requestAnimationFrame
+            var requestAnimationFrameCollection = {
+                    tab: document.getElementById("requestAnimationFrame-tab"),
+                container: document.getElementById("requestAnimationFrame-container"),
+                fpsReport: document.getElementById("requestAnimationFrame-fps"),
+                report: document.getElementById("requestAnimationFrame-report"),
+                timelog: Object.create(null),
+                fpslog: Object.create(null),
+                prevTime: NaN,
+                profiler: null,
+                process: null
+            };
+            // interface
+            var setIntervalDelay = document.getElementById("setInterval-delay"),
+                formatTab = document.getElementById("format-tab"),
+                format = "duration",
+                countTab = document.getElementById("count-tab"),
+                count = "occurrence",
+                eaterTab = document.getElementById("cpu-eater-tab"),
+                eater = false,
+                pauseTab = document.getElementById("pause-tab"),
+                restartTab = document.getElementById("restart-tab"),
+                pauseSampling = false;
+
+            /* Conditions and defaults */
+            // default to show setInterval
+            setIntervalCollection.tab.style.fontWeight = "bold";
+            requestAnimationFrameCollection.container.style.display = "none";
+            // selecting requestAnimationFrame
+            setIntervalCollection.tab.onclick = function () {
+                    setIntervalCollection.tab.className = "tab selected-tab";
+                setIntervalCollection.container.style.display = "block";
+                requestAnimationFrameCollection.tab.className = "tab";
+                requestAnimationFrameCollection.container.style.display = "none";
+            };
+            // selecting setInterval
+            requestAnimationFrameCollection.tab.onclick = function () {
+                    requestAnimationFrameCollection.tab.className = "tab selected-tab";
+                requestAnimationFrameCollection.container.style.display = "block";
+                setIntervalCollection.tab.className = "tab";
+                setIntervalCollection.container.style.display = "none";
+            };
+            // changing setInterval
+            setIntervalDelay.onchange = function () {
+                    setIntervalDelay.value = setIntervalDelay.value.length ? setIntervalDelay.value : 0;
+                adjustTextboxSize(setIntervalDelay);
+                setIntervalCollection.timelog = Object.create(null);
+                setIntervalCollection.fpslog = Object.create(null);
+                setIntervalCollection.prevTime = NaN;
+                outputPrevTime = NaN;
+                if (!pauseSampling) {
+                    clearInterval(setIntervalCollection.process);
+                    setIntervalCollection.process = setInterval(setIntervalCollection.profiler, parseInt(setIntervalDelay.value));
+                }
+            };
+            function adjustTextboxSize(el) {
+                var targetWidth = (el.value.length + 2) * 8,
+                    defaultWidth = (el.defaultValue.length + 2) * 8,
+                    pageMinWidth = parseInt(window.getComputedStyle(document.body).getPropertyValue("min-width").replace(/\D/g, '')),
+                    pageCurrWidth = document.body.clientWidth;
+                el.style.width = targetWidth <= (pageCurrWidth - (pageMinWidth - defaultWidth)) ? targetWidth + 'px' : (pageCurrWidth - (pageMinWidth - defaultWidth)) + 'px';
+            }
+            setIntervalDelay.onkeyup = function () {adjustTextboxSize(setIntervalDelay); };
+            setIntervalDelay.onkeydown = function () {adjustTextboxSize(setIntervalDelay); };
+            setIntervalDelay.onkeypress = function (e) { return isNumberKey(e); };
+            // pause and resume the framerate test
+            function togglePause() {
+                    pauseSampling = pauseSampling ? false : true;
+                pauseTab.innerHTML = pauseSampling ? "RESUME" : "PAUSE";
+                if (pauseSampling) {
+                    clearInterval(setIntervalCollection.process);
+                    setIntervalCollection.process = null;
+                    cancelAnimationFrame(requestAnimationFrameCollection.process);
+                    requestAnimationFrameCollection.process = null;
+                } else {
+                    setIntervalCollection.prevTime = Date.now();
+                    setIntervalCollection.process = setInterval(setIntervalCollection.profiler, parseInt(setIntervalDelay.value));
+                    requestAnimationFrameCollection.prevTime = Date.now();
+                    requestAnimationFrameCollection.process = requestAnimationFrame(requestAnimationFrameCollection.profiler);
+                }
+            }
+            pauseTab.onclick = togglePause;
+            // reset count gathering
+            restartTab.onclick = function () {
+                    setIntervalCollection.prevTime = NaN;
+                requestAnimationFrameCollection.prevTime = NaN;
+                outputPrevTime = NaN;
+
+                setIntervalCollection.timelog = Object.create(null);
+                setIntervalCollection.fpslog = Object.create(null);
+                requestAnimationFrameCollection.timelog = Object.create(null);
+                requestAnimationFrameCollection.fpslog = Object.create(null);
+
+                if (pauseSampling) {
+                    togglePause();
+                }
+            };
+            var outputPrevTime = NaN;
+            // choose a display format
+            function chooseFormat(el) {
+                format = el.innerHTML === "duration" ? "duration" : "fps";
+                output(setIntervalCollection, format, count);
+                output(requestAnimationFrameCollection, format, count);
+            }
+            // choose a display unit
+            function chooseCount(el) {
+                count = el.innerHTML === "percentage" ? "percentage" : "occurrence";
+                output(setIntervalCollection, format, count);
+                output(requestAnimationFrameCollection, format, count);
+            }
+            // choose active/inactive CPU eater
+            function chooseEater(el) {
+                    eater = (el.innerHTML === "on");
+            }
+
+            /* Core functions */
+            // testing for setInterval
+            setIntervalCollection.profiler = function () {
+                var currTime = Date.now();
+                var diff = currTime - setIntervalCollection.prevTime;
+                var fps = diff === 0 ? Number.POSITIVE_INFINITY : Math.round(1000 / diff);
+                var timelog = setIntervalCollection.timelog;
+                var fpslog = setIntervalCollection.fpslog;
+                timelog[diff] = typeof timelog[diff] === "undefined" ? 1 : timelog[diff] + 1;
+                fpslog[fps] = typeof fpslog[fps] === "undefined" ? 1 : fpslog[fps] + 1;
+                setIntervalCollection.prevTime = currTime;
+                //output(setIntervalCollection,format,count);
+                //output(currTime);
+            };
+
+            // testing for requestAnimationFrame
+            requestAnimationFrameCollection.profiler = function (timestamp) {
+                var currTime = Date.now();
+                var diff = currTime - requestAnimationFrameCollection.prevTime;
+                var fps = diff === 0 ? Number.POSITIVE_INFINITY : Math.round(1000 / diff);
+                var timelog = requestAnimationFrameCollection.timelog;
+                var fpslog = requestAnimationFrameCollection.fpslog;
+                timelog[diff] = typeof timelog[diff] === "undefined" ? 1 : timelog[diff] + 1;
+                fpslog[fps] = typeof fpslog[fps] === "undefined" ? 1 : fpslog[fps] + 1;
+                requestAnimationFrameCollection.prevTime = currTime;
+                //output(requestAnimationFrameCollection,format,count);
+                output(currTime);
+                if (!pauseSampling) {
+                    requestAnimationFrameCollection.process = requestAnimationFrame(requestAnimationFrameCollection.profiler);
+                }
+            };
+
+            if (!pauseSampling) {
+                    setIntervalCollection.prevTime = Date.now();
+                requestAnimationFrameCollection.prevTime = Date.now();
+
+                setIntervalCollection.process = setInterval(setIntervalCollection.profiler, parseInt(setIntervalDelay.value));
+                requestAnimationFrameCollection.process = requestAnimationFrame(requestAnimationFrameCollection.profiler);
+            } else {
+                    setIntervalCollection.process = null;
+                requestAnimationFrameCollection.process = null;
+            }
+
+            var outputTimer = null;
+            // output results
+            //
+            // NOTE: throttle this so as not to load/overload the tick events when the stats grow.
+            // Update the display only every 250ms or so.
+            function output(currTime) {
+                    currTime = Number.isFinite(currTime) ? currTime : Date.now();
+                var diff = currTime - outputPrevTime;
+                outputPrevTime = currTime;
+
+                if (!outputTimer || !Number.isFinite(diff) || diff >= 1000) {
+                    renderOutput(setIntervalCollection, format, count);
+                    renderOutput(requestAnimationFrameCollection, format, count);
+
+                    // retrigger the stats renderer
+                    if (!pauseSampling) {
+                        if (!outputTimer) {
+                    outputTimer = setTimeout(function () {
+                        outputTimer = null;
+                        output();
+
+                        if (eater) {
+                            // spend a second here and ensure no-one can run but us. Burn CPU.
+                            var t = Date.now();
+                            for (; ;) {
+                                var t2 = Date.now();
+                                var d = t2 - t;
+                                if (d >= 1100) break;
+                            }
+                        }
+                    }, 1250);
+                        }
+                    }
+                }
+                // else: small time interval between render requests: ignore. Wait for render timer to trigger instead.
+            }
+
+            function renderOutput(collection, format, count) {
+                    format = format === "fps" ? format : "duration";
+                var showCount = (count === "occurrence");
+                var logtype = format === "fps" ? "fpslog" : "timelog";
+                var label = format === "fps" ? "fps" : "ms";
+                var infinityKey = null;
+                var infinityValue = 0;
+                var nanKey = null;
+                var nanValue = 0;
+                var keys = [];
+                var maxvalue = 0;
+                var total = 0;
+                var arr = collection[logtype];
+                for (var key in arr) {
+                    key = +key;
+                    if (Number.isNaN(key)) {
+                    nanKey = 'NaN';
+                        nanValue += arr[key];
+                    } else if (!Number.isFinite(key)) {
+                    infinityKey = '∞'; // '&infin;'
+                        infinityValue += arr[key];
+                    } else {
+                    keys.push(parseInt(key));
+                    }
+                    maxvalue = Math.max(maxvalue, arr[key]);
+                    total += arr[key];
+                }
+                maxvalue = Math.max(maxvalue, infinityValue, nanValue);
+                keys.sort(function (a, b) {
+                    return a - b;
+                });
+                // only display the NaN/Inf values when there's more than 1 occurrence of NaN:
+                // that can only happen when something went wrong
+                //
+                // Note: the first NaN occurrence is at the start of the run due to prevTime being NULL.
+                // Inf occurrences CAN happen when times between two events was VERY short.
+                if (infinityKey != null) keys.push(infinityKey);
+                if (nanKey != null && nanValue > 1) keys.unshift(nanKey);
+                var len = keys.length;
+                var tabledata = ["<div class='datatable'>"];
+                for (var i = 0; i < len; i++) {
+                        key = keys[i];
+                    var value = (key === nanKey ? nanValue : key === infinityKey ? infinityValue : arr[key]);
+                    var width = value / maxvalue * 80;
+                    var color = "rgb(" + Math.floor(120 + value / maxvalue * 135) + "," + Math.floor(200 - value / maxvalue * 100) + ",0)";
+                    var barValue;
+                    if (showCount) {
+                        barValue = value;
+                    } else {
+                        barValue = (value / total * 100).toFixed(2) + "%";
+                    }
+                    tabledata.push("<div class='datarow'><div class='unit-label'>" + key + " <span class='unit'>" + label + "</span>&nbsp;</div><div class='bar-container'><div class='bar' style='width:" + width + "%; background: " + color + ";'>&nbsp;</div>&nbsp;<span class='bar-label' style='color: " + color + ";'>" + barValue + "</span></div></div>");
+                }
+                tabledata.push("</div>");
+                collection.report.innerHTML = tabledata.join("\n");
+            }
+//]]>
+
+                console.log('JS: set up done!');
+
+                // fake it to thwart parcel code tree shaker mistakes:
+                setTimeout(function () {
+                    console.log("quick dirty parcel hack");
+                    var el = null;
+                    chooseFormat(el);
+                    chooseCount(el);
+                    chooseEater(el);
+                }, 1);
+    </script>
 </body>
 </html>
