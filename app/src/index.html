@@ -11,7 +11,7 @@
     <link href='toggle-switch.css' rel='stylesheet' type='text/css' />
     <link href='https://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css' />
     <style>
-        body {
+        #nav-fps-bm {
             font-family: 'Fjalla One', sans-serif;
             font-size: 10px;
             color: #EEE;
@@ -104,6 +104,8 @@
             background: linear-gradient(to bottom, #a90329 0%,#8f0222 44%,#6d0019 100%);
             filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a90329', endColorstr='#6d0019',GradientType=0 );
             cursor: pointer;
+
+            box-sizing: content-box !important;
         }
 
             #nav-fancy #pause-tab:hover, #nav-fancy #restart-tab:hover {
@@ -131,6 +133,10 @@
         #nav-fancy #format-tab, #nav-fancy #count-tab, #nav-fancy #cpu-eater-tab {
             float: right;
             margin-right: 10px;
+        }
+
+        #nav-fancy label {
+            margin-bottom: 0 !important;
         }
 
         #nav-padding {
@@ -196,6 +202,7 @@
     <script type="text/javascript">
     </script>
 
+    <div id="nav-fps-bm">
         <div id="nav-fancy">
             <div id="nav-content">
                 <div id="logo">
@@ -247,17 +254,18 @@
                 </div>
             </div>
         </div>
-            <div id="nav-padding"></div>
-            <div id="setInterval-container">
-                <div id="setInterval-fps"></div>
-                <div id="setInterval-report"></div>
-            </div>
-            <div id="requestAnimationFrame-container">
-                <div id="requestAnimationFrame-fps"></div>
-                <div id="requestAnimationFrame-report"></div>
-            </div>
-            <div id="footer-padding"></div>
-            <script type="text/javascript">
+        <div id="nav-padding"></div>
+        <div id="setInterval-container">
+            <div id="setInterval-fps"></div>
+            <div id="setInterval-report"></div>
+        </div>
+        <div id="requestAnimationFrame-container">
+            <div id="requestAnimationFrame-fps"></div>
+            <div id="requestAnimationFrame-report"></div>
+        </div>
+        <div id="footer-padding"></div>
+    </div>
+        <script type="text/javascript">
             //<![CDATA[
             /* Function preparations */
             // object size
@@ -308,7 +316,7 @@
             };
             // collection for requestAnimationFrame
             var requestAnimationFrameCollection = {
-                    tab: document.getElementById("requestAnimationFrame-tab"),
+                tab: document.getElementById("requestAnimationFrame-tab"),
                 container: document.getElementById("requestAnimationFrame-container"),
                 fpsReport: document.getElementById("requestAnimationFrame-fps"),
                 report: document.getElementById("requestAnimationFrame-report"),
@@ -336,21 +344,21 @@
             requestAnimationFrameCollection.container.style.display = "none";
             // selecting requestAnimationFrame
             setIntervalCollection.tab.onclick = function () {
-                    setIntervalCollection.tab.className = "tab selected-tab";
+                setIntervalCollection.tab.className = "tab selected-tab";
                 setIntervalCollection.container.style.display = "block";
                 requestAnimationFrameCollection.tab.className = "tab";
                 requestAnimationFrameCollection.container.style.display = "none";
             };
             // selecting setInterval
             requestAnimationFrameCollection.tab.onclick = function () {
-                    requestAnimationFrameCollection.tab.className = "tab selected-tab";
+                requestAnimationFrameCollection.tab.className = "tab selected-tab";
                 requestAnimationFrameCollection.container.style.display = "block";
                 setIntervalCollection.tab.className = "tab";
                 setIntervalCollection.container.style.display = "none";
             };
             // changing setInterval
             setIntervalDelay.onchange = function () {
-                    setIntervalDelay.value = setIntervalDelay.value.length ? setIntervalDelay.value : 0;
+                setIntervalDelay.value = setIntervalDelay.value.length ? setIntervalDelay.value : 0;
                 adjustTextboxSize(setIntervalDelay);
                 setIntervalCollection.timelog = Object.create(null);
                 setIntervalCollection.fpslog = Object.create(null);
@@ -368,12 +376,12 @@
                     pageCurrWidth = document.body.clientWidth;
                 el.style.width = targetWidth <= (pageCurrWidth - (pageMinWidth - defaultWidth)) ? targetWidth + 'px' : (pageCurrWidth - (pageMinWidth - defaultWidth)) + 'px';
             }
-            setIntervalDelay.onkeyup = function () {adjustTextboxSize(setIntervalDelay); };
-            setIntervalDelay.onkeydown = function () {adjustTextboxSize(setIntervalDelay); };
+            setIntervalDelay.onkeyup = function () { adjustTextboxSize(setIntervalDelay); };
+            setIntervalDelay.onkeydown = function () { adjustTextboxSize(setIntervalDelay); };
             setIntervalDelay.onkeypress = function (e) { return isNumberKey(e); };
             // pause and resume the framerate test
             function togglePause() {
-                    pauseSampling = pauseSampling ? false : true;
+                pauseSampling = pauseSampling ? false : true;
                 pauseTab.innerHTML = pauseSampling ? "RESUME" : "PAUSE";
                 if (pauseSampling) {
                     clearInterval(setIntervalCollection.process);
@@ -390,7 +398,7 @@
             pauseTab.onclick = togglePause;
             // reset count gathering
             restartTab.onclick = function () {
-                    setIntervalCollection.prevTime = NaN;
+                setIntervalCollection.prevTime = NaN;
                 requestAnimationFrameCollection.prevTime = NaN;
                 outputPrevTime = NaN;
 
@@ -418,7 +426,7 @@
             }
             // choose active/inactive CPU eater
             function chooseEater(el) {
-                    eater = (el.innerHTML === "on");
+                eater = (el.innerHTML === "on");
             }
 
             /* Core functions */
@@ -454,13 +462,13 @@
             };
 
             if (!pauseSampling) {
-                    setIntervalCollection.prevTime = Date.now();
+                setIntervalCollection.prevTime = Date.now();
                 requestAnimationFrameCollection.prevTime = Date.now();
 
                 setIntervalCollection.process = setInterval(setIntervalCollection.profiler, parseInt(setIntervalDelay.value));
                 requestAnimationFrameCollection.process = requestAnimationFrame(requestAnimationFrameCollection.profiler);
             } else {
-                    setIntervalCollection.process = null;
+                setIntervalCollection.process = null;
                 requestAnimationFrameCollection.process = null;
             }
 
@@ -470,7 +478,7 @@
             // NOTE: throttle this so as not to load/overload the tick events when the stats grow.
             // Update the display only every 250ms or so.
             function output(currTime) {
-                    currTime = Number.isFinite(currTime) ? currTime : Date.now();
+                currTime = Number.isFinite(currTime) ? currTime : Date.now();
                 var diff = currTime - outputPrevTime;
                 outputPrevTime = currTime;
 
@@ -481,20 +489,20 @@
                     // retrigger the stats renderer
                     if (!pauseSampling) {
                         if (!outputTimer) {
-                    outputTimer = setTimeout(function () {
-                        outputTimer = null;
-                        output();
+                            outputTimer = setTimeout(function () {
+                                outputTimer = null;
+                                output();
 
-                        if (eater) {
-                            // spend a second here and ensure no-one can run but us. Burn CPU.
-                            var t = Date.now();
-                            for (; ;) {
-                                var t2 = Date.now();
-                                var d = t2 - t;
-                                if (d >= 1100) break;
-                            }
-                        }
-                    }, 1250);
+                                if (eater) {
+                                    // spend a second here and ensure no-one can run but us. Burn CPU.
+                                    var t = Date.now();
+                                    for (; ;) {
+                                        var t2 = Date.now();
+                                        var d = t2 - t;
+                                        if (d >= 1100) break;
+                                    }
+                                }
+                            }, 1250);
                         }
                     }
                 }
@@ -502,7 +510,7 @@
             }
 
             function renderOutput(collection, format, count) {
-                    format = format === "fps" ? format : "duration";
+                format = format === "fps" ? format : "duration";
                 var showCount = (count === "occurrence");
                 var logtype = format === "fps" ? "fpslog" : "timelog";
                 var label = format === "fps" ? "fps" : "ms";
@@ -517,13 +525,13 @@
                 for (var key in arr) {
                     key = +key;
                     if (Number.isNaN(key)) {
-                    nanKey = 'NaN';
+                        nanKey = 'NaN';
                         nanValue += arr[key];
                     } else if (!Number.isFinite(key)) {
-                    infinityKey = '∞'; // '&infin;'
+                        infinityKey = '∞'; // '&infin;'
                         infinityValue += arr[key];
                     } else {
-                    keys.push(parseInt(key));
+                        keys.push(parseInt(key));
                     }
                     maxvalue = Math.max(maxvalue, arr[key]);
                     total += arr[key];
@@ -542,7 +550,7 @@
                 var len = keys.length;
                 var tabledata = ["<div class='datatable'>"];
                 for (var i = 0; i < len; i++) {
-                        key = keys[i];
+                    key = keys[i];
                     var value = (key === nanKey ? nanValue : key === infinityKey ? infinityValue : arr[key]);
                     var width = value / maxvalue * 80;
                     var color = "rgb(" + Math.floor(120 + value / maxvalue * 135) + "," + Math.floor(200 - value / maxvalue * 100) + ",0)";
@@ -557,18 +565,21 @@
                 tabledata.push("</div>");
                 collection.report.innerHTML = tabledata.join("\n");
             }
-//]]>
+            //]]>
 
-                console.log('JS: set up done!');
+            console.log('JS: set up done!');
 
-                // fake it to thwart parcel code tree shaker mistakes:
-                setTimeout(function () {
-                    console.log("quick dirty parcel hack");
-                    var el = null;
-                    chooseFormat(el);
-                    chooseCount(el);
-                    chooseEater(el);
-                }, 1);
-    </script>
+            // fake it to thwart parcel code tree shaker mistakes:
+            setTimeout(function () {
+                console.log("quick dirty parcel hack");
+                var el = null;
+                chooseFormat(el);
+                chooseCount(el);
+                chooseEater(el);
+            }, 1);
+        </script>
+
+        <div id="root"></div>
+        <script src="./index.tsx"></script>
 </body>
 </html>
