@@ -1,0 +1,42 @@
+@import "../default-variables";
+@import "../mixin/button-3d";
+
+.btn-cancel {
+    @include button-3d(
+        var(--button-cancel-color, $button-cancel-color),
+        var(--button-cancel-background, $button-cancel-background),
+        var(--button-cancel-text-shadow, $button-cancel-text-shadow),
+        var(--button-cancel-border-top, $button-cancel-border-top),
+        var(--button-cancel-border-left, $button-cancel-border-left),
+        var(--button-cancel-border-right, $button-cancel-border-right),
+        var(--button-cancel-border-bottom, $button-cancel-border-bottom),
+        var(--button-cancel-hover-color, $button-cancel-hover-color),
+        var(--button-cancel-hover-background, $button-cancel-hover-background),
+        var(--button-cancel-hover-text-shadow, $button-cancel-hover-text-shadow),
+        var(--button-cancel-hover-border-top, $button-cancel-hover-border-top),
+        var(--button-cancel-hover-border-left, $button-cancel-hover-border-left),
+        var(--button-cancel-hover-border-right, $button-cancel-hover-border-right),
+        var(--button-cancel-hover-border-bottom, $button-cancel-hover-border-bottom),
+        var(--button-cancel-disabled-hover-color, $button-cancel-disabled-hover-color)
+    )
+}
+
+.btn-install-game {
+    @include button-3d(
+        var(--button-install-game-color, $button-install-game-color),
+        var(--button-install-game-background, $button-install-game-background),
+        var(--button-install-game-text-shadow, $button-install-game-text-shadow),
+        var(--button-install-game-border-top, $button-install-game-border-top),
+        var(--button-install-game-border-left, $button-install-game-border-left),
+        var(--button-install-game-border-right, $button-install-game-border-right),
+        var(--button-install-game-border-bottom, $button-install-game-border-bottom),
+        var(--button-install-game-hover-color, $button-install-game-hover-color),
+        var(--button-install-game-hover-background, $button-install-game-hover-background),
+        var(--button-install-game-hover-text-shadow, $button-install-game-hover-text-shadow),
+        var(--button-install-game-hover-border-top, $button-install-game-hover-border-top),
+        var(--button-install-game-hover-border-left, $button-install-game-hover-border-left),
+        var(--button-install-game-hover-border-right, $button-install-game-hover-border-right),
+        var(--button-install-game-hover-border-bottom, $button-install-game-hover-border-bottom),
+        var(--button-install-game-disabled-hover-color, $button-install-game-disabled-hover-color)
+    )
+}

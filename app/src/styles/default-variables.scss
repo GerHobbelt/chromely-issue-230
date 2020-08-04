@@ -1,0 +1,88 @@
+// general
+$selection-color: #000;
+$selection-background-color: #ffd34b;
+
+$body-color: #fff;
+$body-background: #191923;
+
+$heading-color: #fff;
+
+$anchor-color: #fff;
+
+// layout
+$layout-no-internet-color: #721c24;
+$layout-no-internet-background-color: #d6bbf9;
+
+// progressbar
+$progressbar-popup-background: #191923;
+$progressbar-background-color: #272b42;
+$progressbar-fill-background-color: #618609;
+$progressbar-fill-failed-background-color: #dc3545;
+$progressbar-control-color: #000;
+
+// scrollbar
+$scrollbar-track-background: #272b42;
+$scrollbar-thumb-background: #383d5c;
+$scrollbar-thumb-hover-background: #3f4464;
+
+// common/buttons
+$button-cancel-color: #000;
+$button-cancel-background: #ffd34b;
+$button-cancel-text-shadow: 1px 1px 1px #fff;
+$button-cancel-border-top: 3px solid #ffefbf;
+$button-cancel-border-left: 3px solid #e49417;
+$button-cancel-border-right: 3px solid #e49417;
+$button-cancel-border-bottom: 3px solid #efb403;
+$button-cancel-hover-color: #fff;
+$button-cancel-hover-background: #ff932f;
+$button-cancel-hover-text-shadow: 1px 1px 1px #000;
+$button-cancel-hover-border-top: 3px solid #c57600;
+$button-cancel-hover-border-left: 3px solid #ffc973;
+$button-cancel-hover-border-right: 3px solid #ffc973;
+$button-cancel-hover-border-bottom: 3px solid #ffe8a1;
+$button-cancel-disabled-hover-color: #000;
+
+$button-install-game-color: #000;
+$button-install-game-background: #ffd34b;
+$button-install-game-text-shadow: 1px 1px 1px #fff;
+$button-install-game-border-top: 3px solid #ffefbf;
+$button-install-game-border-left: 3px solid #e49417;
+$button-install-game-border-right: 3px solid #e49417;
+$button-install-game-border-bottom: 3px solid #efb403;
+$button-install-game-hover-color: #fff;
+$button-install-game-hover-background: #ff932f;
+$button-install-game-hover-text-shadow: 1px 1px 1px #000;
+$button-install-game-hover-border-top: 3px solid #c57600;
+$button-install-game-hover-border-left: 3px solid #ffc973;
+$button-install-game-hover-border-right: 3px solid #ffc973;
+$button-install-game-hover-border-bottom: 3px solid #ffe8a1;
+$button-install-game-disabled-hover-color: #000;
+
+// common/content-box
+$content-box-heading-primary-color: #fff;
+$content-box-heading-primary-text-shadow: 1px 1px 5px #000;
+$content-box-heading-secondary-text-shadow: 1px 1px 5px #000;
+$content-box-heading-secondary-subheading-color: #b4bed6;
+$content-box-heading-secondary-more-color: #b4bed6;
+$content-box-heading-secondary-more-hover-color: #efc832;
+$content-box-item-box-background: #202336;
+$content-box-item-box-badge-color: #b4bed6;
+$content-box-item-box-badge-border: 1px solid #b4bed6;
+$content-box-item-box-badge-hover-color: #efc832;
+$content-box-item-box-badge-hover-border-color: #efc832;
+
+$content-box-table-heading-color: #b4bed6;
+
+$content-box-table-row-background: #202336;
+$content-box-table-row-title-hover-color: #b4bed6;
+
+// common/game-thumbnail
+$game-thumbnail-box-background: #202336;
+$game-thumbnail-box-hover-background: #363d5e;
+
+// common/games-infinite-list
+$games-infinite-list-game-row-background: #202336;
+$games-infinite-list-game-row-hover-background: #363d5e;
+
+// page/category
+$category-failed-to-load-color: #fff;

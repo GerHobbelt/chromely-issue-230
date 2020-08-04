@@ -1,0 +1,36 @@
+@import "../default-variables";
+@import "../mixin/delay-appearance";
+@import "../mixin/selectable-text";
+
+.games-infinite-list-loading-indicator {
+    @include delay-appearance;
+    width: 100%;
+    margin-top: 1rem;
+    text-align: center;
+    color: #b8c5e3;
+}
+
+.games-infinite-list-failed-to-load {
+    @include selectable-text;
+    width: 100%;
+    padding-top: 4rem;
+    text-align: center;
+}
+
+.games-infinite-list-load-more-container {
+    width: 100%;
+    text-align: center;
+}
+
+.games-infinite-list-game-row {
+    cursor: pointer;
+    background: var(--games-infinite-list-game-row-background, $games-infinite-list-game-row-background);
+    transition: background 500ms ease-in-out;
+
+    &:hover {
+        background: var(
+            --games-infinite-list-game-row-hover-background,
+            $games-infinite-list-game-row-hover-background
+        ) !important;
+    }
+}

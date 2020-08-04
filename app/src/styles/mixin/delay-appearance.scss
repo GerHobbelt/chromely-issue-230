@@ -1,0 +1,18 @@
+@keyframes make-visible {
+    0% {
+        opacity: 0;
+    }
+    66% {
+        opacity: 0;
+    }
+    100% {
+        visibility: visible;
+        opacity: 1;
+    }
+}
+
+@mixin delay-appearance {
+    visibility: hidden;
+    animation: 1000ms make-visible;
+    animation-fill-mode: forwards;
+}

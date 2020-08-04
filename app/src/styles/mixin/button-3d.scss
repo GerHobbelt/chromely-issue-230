@@ -1,0 +1,37 @@
+@mixin button-3d($color, $background, $textShadow, $borderTop, $borderLeft, $borderRight, $borderBottom,
+    $hoverColor, $hoverBackground, $hoverTextShadow, $hoverBorderTop, $hoverBorderLeft, $hoverBorderRight, $hoverBorderBottom,
+    $disabledHoverColor) {
+        color: $color;
+        background: $background;
+        text-shadow: $textShadow;
+        border-top: $borderTop;
+        border-left: $borderLeft;
+        border-right: $borderRight;
+        border-bottom: $borderBottom;
+        border-radius: 10px;
+        font-size: 12pt;
+        padding: 5px 15px;
+        text-align: center;
+        font-weight: bold;
+        margin-top: 10px;
+        display: inline-block;
+    
+        &:hover:not(.disabled) {
+            color: $hoverColor;
+            background: $hoverBackground;
+            text-shadow: $hoverTextShadow;
+            border-top: $hoverBorderTop;
+            border-left: $hoverBorderLeft;
+            border-right: $hoverBorderRight;
+            border-bottom: $hoverBorderBottom;
+        }
+    
+        &.disabled {
+            cursor: not-allowed;
+            opacity: 0.65;
+    
+            &:hover {
+                color: $disabledHoverColor;
+            }
+        }
+}

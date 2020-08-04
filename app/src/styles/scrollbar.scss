@@ -1,0 +1,23 @@
+@import "default-variables";
+
+/* width */
+.scroll::-webkit-scrollbar {
+    width: 10px;
+    height: 8px;
+}
+
+/* Track */
+.scroll::-webkit-scrollbar-track {
+    background: var(--scrollbar-track-background, $scrollbar-track-background);
+}
+
+/* Handle */
+.scroll::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb-background, $scrollbar-thumb-background);
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+.scroll::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover-background, $scrollbar-thumb-hover-background);
+}

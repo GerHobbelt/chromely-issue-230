@@ -1,0 +1,24 @@
+// TODO: Extract styles from content box SCSS.
+@import "../default-variables";
+
+.game-thumbnail {
+    .box.box {
+        // TODO: Remove doubled specificity after extracting styles.
+        cursor: pointer;
+        background: var(--game-thumbnail-box-background, $game-thumbnail-box-background);
+        transition: background 500ms ease-in-out;
+
+        &:hover {
+            background: var(--game-thumbnail-box-hover-background, $game-thumbnail-box-hover-background);
+        }
+
+        .box-content {
+            opacity: 0.85;
+            transition: opacity 500ms ease-in-out;
+
+            &:hover {
+                opacity: 1;
+            }
+        }
+    }
+}

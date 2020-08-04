@@ -1,0 +1,40 @@
+{
+  "name": "testapp",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "parcel start src/index.html --open -p 10345",
+    "build": "parcel build src/index.html",
+    "generate-dto": "typescript-ref http://localhost:5000 ./src/services/api"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.28",
+    "@fortawesome/free-brands-svg-icons": "^5.13.0",
+    "@fortawesome/free-solid-svg-icons": "^5.13.0",
+    "@fortawesome/react-fontawesome": "^0.1.8",
+    "@servicestack/client": "^1.0.31",
+    "bootstrap": "^4.4.1",
+    "classnames": "^2.2.6",
+    "fuse.js": "^3.4.6",
+    "jquery": "^3.4.1",
+    "node-sass": "^4.14.1",
+    "popper.js": "^1.16.1",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-slick": "^0.25.2",
+    "reactstrap": "^8.2.0",
+    "rxjs": "^6.5.4",
+    "slick-carousel": "^1.8.1"
+  },
+  "devDependencies": {
+    "@types/classnames": "^2.2.9",
+    "@types/react": "^16.9.19",
+    "@types/react-dom": "^16.9.5",
+    "@types/react-slick": "^0.23.4",
+    "@types/reactstrap": "^8.2.0",
+    "parcel-bundler": "^1.12.4",
+    "tslint": "^6.0.0",
+    "tslint-react": "^4.2.0",
+    "typescript": "^3.7.5"
+  }
+}

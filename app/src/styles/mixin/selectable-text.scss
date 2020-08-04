@@ -1,0 +1,15 @@
+@mixin selectable-text {
+    user-select: text;
+
+    * {
+        user-select: text;
+    }
+}
+
+@mixin non-selectable-text {
+    user-select: none;
+
+    * {
+        user-select: none;
+    }
+}

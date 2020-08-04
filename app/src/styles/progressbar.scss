@@ -1,0 +1,54 @@
+@import "default-variables";
+
+.popup-bottombar {
+    display: block;
+    width: 100%;
+    height: auto;
+    position: fixed;
+    bottom: 0;
+    height: 80px;
+    background: var(--progressbar-popup-background, $progressbar-popup-background);
+    z-index: 100;
+    opacity: 0.9;
+
+    &:hover {
+        opacity: 1;
+    }
+
+    .progressbar {
+        display: block;
+        width: 100%;
+        background-color: var(--progressbar-background-color, $progressbar-background-color);
+    }
+
+    .progressbar-fill {
+        width: 1%;
+        height: 8px;
+        background-color: var(--progressbar-fill-background-color, $progressbar-fill-background-color);
+    }
+
+    .progressbar-fill.failed {
+        width: 1%;
+        height: 8px;
+        background-color: var(--progressbar-fill-failed-background-color, $progressbar-fill-failed-background-color);
+    }
+
+    .progressbar-info {
+        cursor: pointer;
+        padding: 10px 50px;
+    }
+
+    .progressbar-label {
+        cursor: pointer;
+        user-select: none;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: inline-block;
+        font-size: 20pt;
+    }
+
+    .progressbar-control button {
+        color: var(--progressbar-control-color, $progressbar-control-color);
+    }
+}

@@ -1,0 +1,142 @@
+@import "../default-variables";
+
+.content_box {
+    margin-bottom: 30px;
+
+    .content_box_heading {
+        margin-bottom: 5px;
+
+        h1 {
+            color: var(--content-box-heading-primary-color, $content-box-heading-primary-color);
+            font-size: 24pt;
+            text-shadow: var(--content-box-heading-primary-text-shadow, $content-box-heading-primary-text-shadow);
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 18pt;
+            text-shadow: var(--content-box-heading-secondary-text-shadow, $content-box-heading-secondary-text-shadow);
+
+            &.subheading {
+                color: var(
+                    --content-box-heading-secondary-subheading-color,
+                    $content-box-heading-secondary-subheading-color
+                );
+                font-weight: normal;
+                font-size: 12pt;
+                text-shadow: none;
+                margin: 20px auto 50px;
+            }
+        }
+
+        a.morelink {
+            line-height: 24pt;
+            font-size: 11pt;
+            color: var(--content-box-heading-secondary-more-color, $content-box-heading-secondary-more-color);
+
+            &:hover {
+                color: var(
+                    --content-box-heading-secondary-more-hover-color,
+                    $content-box-heading-secondary-more-hover-color
+                );
+            }
+        }
+    }
+
+    .content_box_grid {
+        .col.item {
+            padding: 10px;
+        }
+
+        .item {
+            .box {
+                background: var(--content-box-item-box-background, $content-box-item-box-background);
+                padding-bottom: 10px;
+                margin-bottom: 5px;
+
+                img.thumbnail {
+                    width: 100%;
+                    min-height: 200px;
+                    max-height: 200px;
+                    object-fit: cover;
+                    margin-bottom: 5px;
+                }
+
+                div.label {
+                    width: 100%;
+                    padding: 0 10px;
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: wrap;
+                    justify-content: space-between;
+                    align-content: flex-start;
+                    align-items: flex-start;
+
+                    a.label_title {
+                        display: block;
+                        width: 100%;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        margin-bottom: 3px;
+                        flex: 2 0 100%;
+                        align-self: auto;
+                    }
+
+                    a.label_badge {
+                        font-size: 9pt;
+                        padding: 2px 5px;
+                        border: var(--content-box-item-box-badge-border, $content-box-item-box-badge-border);
+                        color: var(--content-box-item-box-badge-color, $content-box-item-box-badge-color);
+                        border-radius: 5px;
+                        order: 0;
+                        flex: 0 1 auto;
+                        align-self: auto;
+                        margin-right: 20px;
+
+                        &:hover {
+                            border-color: var(
+                                --content-box-item-box-badge-hover-border-color,
+                                $content-box-item-box-badge-hover-border-color
+                            );
+                            color: var(
+                                --content-box-item-box-badge-hover-color,
+                                $content-box-item-box-badge-hover-color
+                            );
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.content_box_table_heading {
+    margin-bottom: 10px;
+    color: var(--content-box-table-heading-color, $content-box-table-heading-color);
+
+    div.game_icon {
+        min-width: 64px;
+    }
+}
+
+.content_box_table_row {
+    background: var(--content-box-table-row-background, $content-box-table-row-background);
+    padding: 15px 5px;
+    margin: 8px 0px;
+
+    .game_title a:hover {
+        color: var(--content-box-table-row-title-hover-color, $content-box-table-row-title-hover-color);
+    }
+
+    div.game_icon img {
+        width: 100%;
+        max-width: 64px;
+        border-radius: 5px;
+    }
+
+    .game_downloads,
+    .game_dev {
+        text-align: center;
+    }
+}
